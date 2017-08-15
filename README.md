@@ -1,2 +1,2 @@
 # selenium-training
-Selenium courses repo
+Selenium courses repository
