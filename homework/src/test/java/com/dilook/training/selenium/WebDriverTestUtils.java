@@ -1,5 +1,6 @@
 package com.dilook.training.selenium;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -18,6 +19,14 @@ import java.util.Properties;
  * Created by Di on 24.08.2017.
  */
 public class WebDriverTestUtils {
+
+    protected static void login(WebDriver webDriver) {
+        webDriver.navigate().to("http://localhost/litecart/admin/login.php");
+        webDriver.findElement(By.name("username")).sendKeys("admin");
+        webDriver.findElement(By.name("password")).sendKeys("admin");
+        webDriver.findElement(By.name("login")).click();
+
+    }
 
     protected static WebDriver selectWebDriver(DesiredCapabilities caps) throws IOException {
         String browser = System.getProperty("browser", "CR");
@@ -62,4 +71,6 @@ public class WebDriverTestUtils {
 
         return properties.getProperty(propName);
     }
+
+
 }
