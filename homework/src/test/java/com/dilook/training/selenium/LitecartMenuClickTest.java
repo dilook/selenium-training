@@ -9,9 +9,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.IOException;
 
-import static com.dilook.training.selenium.WebDriverTestUtils.login;
+import static com.dilook.training.selenium.UITestUtils.areElementsPresent;
+import static com.dilook.training.selenium.UITestUtils.login;
 import static com.dilook.training.selenium.WebDriverTestUtils.selectWebDriver;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Di on 24.08.2017.
@@ -39,21 +41,23 @@ public class LitecartMenuClickTest {
         for (int item = 1; item <= menuSize; item++) {
             webDriver.findElement(By.cssSelector("[id = app-]:nth-child(" + item + ")")).click();
 
-            text = webDriver.findElement(By.tagName("h1")).getText();
+            assertTrue(areElementsPresent(webDriver, By.tagName("h1")));
 
+            text = webDriver.findElement(By.tagName("h1")).getText();
             assertNotEquals(text, "");
-            System.out.println("Menu: " + text);
+
+            System.out.println("#" + item + ": " + text);
             subMenuSize = webDriver.findElements(By.cssSelector("[id ^= doc-]")).size();
 
-            if (subMenuSize != 0) {
+            if (subMenuSize > 0) {
                 for (int subItem = 1; subItem <= subMenuSize; subItem++) {
                     webDriver.findElement(By.cssSelector("[id ^= doc-]:nth-child(" + subItem + ")")).click();
+                    assertTrue(areElementsPresent(webDriver, By.tagName("h1")));
 
                     text = webDriver.findElement(By.tagName("h1")).getText();
-
                     assertNotEquals(text, "");
-                    System.out.println("SubMenu: " + text);
 
+                    System.out.println("\t" + item + "." + subItem + ": " + text);
                 }
             }
 
