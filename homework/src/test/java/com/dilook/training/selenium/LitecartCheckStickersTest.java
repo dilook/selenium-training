@@ -40,7 +40,7 @@ public class LitecartCheckStickersTest {
         for (WebElement element : products) {
             int countStickers = element.findElements(By.cssSelector(".sticker")).size();
 
-            assertEquals(countStickers, 1);
+            assertEquals(1, countStickers);
         }
     }
 
