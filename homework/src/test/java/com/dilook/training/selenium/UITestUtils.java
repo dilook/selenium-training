@@ -9,6 +9,13 @@ import org.openqa.selenium.WebElement;
  */
 public class UITestUtils {
 
+    protected static void login(WebDriver webDriver, String page) {
+        webDriver.navigate().to(page);
+        webDriver.findElement(By.name("username")).sendKeys("admin");
+        webDriver.findElement(By.name("password")).sendKeys("admin");
+        webDriver.findElement(By.name("login")).click();
+    }
+
     protected static void login(WebDriver webDriver) {
         webDriver.navigate().to("http://localhost/litecart/admin/login.php");
         webDriver.findElement(By.name("username")).sendKeys("admin");
