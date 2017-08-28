@@ -9,12 +9,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.dilook.training.selenium.UITestUtils.login;
 import static com.dilook.training.selenium.WebDriverTestUtils.selectWebDriver;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Di on 27.08.2017.
@@ -33,15 +32,22 @@ public class LitecartCountrGeoTest {
         login(webDriver, "http://localhost/litecart/admin/?app=countries&doc=countries");
 
         List<WebElement> countriesElement = webDriver.findElements(By.xpath("//*[contains(@class, 'row')]/td[5]"));
-        ArrayList<String> textCountries = new ArrayList<>();
-        for (WebElement country : countriesElement) {
-            textCountries.add(country.getText());
+        int result;
+        for (int i = 0; i < countriesElement.size() - 1; i++) {
+            result = countriesElement.get(i).getText().compareTo(countriesElement.get(i + 1).getText());
+            assertTrue("Сортировка стран не в алфавитном порядке", result < 0);
         }
 
-        ArrayList<String> sortCountries = new ArrayList<>();
-        Collections.sort(textCountries);
+        WebElement text;
 
-        //Arrays.equals(textCountries, sortCountries);
+        for (int i = 0; i < countriesElement.size(); i++) {
+            text = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]/td[6]"));
+            if (text.getText() != "0") {
+                text.click();
+                checkZones(webDriver);
+            }
+        }
+
 
     }
 
@@ -49,6 +55,19 @@ public class LitecartCountrGeoTest {
     public void stop() {
         webDriver.quit();
         webDriver = null;
+    }
+
+    private void checkZones(WebDriver webDriver) {
+        WebElement table = webDriver.findElement(By.id("table-zones"));
+        List<WebElement> rows = table.findElements(By.tagName("tr"));
+
+
+        int result;
+        for (int i = 0; i < rows.size() - 1; i++) {
+            result = row.get(i).getText().compareTo(countriesElement.get(i + 1).getText());
+            assertTrue("Сортировка стран не в алфавитном порядке", result < 0);
+        }
+
     }
 
 }
