@@ -49,12 +49,18 @@ public class LitecartCountrGeoTest {
         for (int i = 1; i < countriesSize + 1; i++) {
             text = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]"));
             if (!text.findElement(By.xpath("./td[6]")).getText().equals("0")) {
-                System.out.println(text.findElement(By.xpath("./td[6]")).getText());
                 text.findElement(By.tagName("a")).click();
                 checkZones(webDriver);
                 webDriver.navigate().back();
             }
         }
+    }
+
+    @Test
+    public void assertsGeoZones() {
+        login(webDriver, "http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+
+
     }
 
     @After
