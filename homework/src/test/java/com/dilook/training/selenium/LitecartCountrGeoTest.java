@@ -37,18 +37,24 @@ public class LitecartCountrGeoTest {
             result = countriesElement.get(i).getText().compareTo(countriesElement.get(i + 1).getText());
             assertTrue("Сортировка стран не в алфавитном порядке", result < 0);
         }
+    }
 
+    @Test
+    public void assertZones() {
+        login(webDriver, "http://localhost/litecart/admin/?app=countries&doc=countries");
+
+        int countriesSize = webDriver.findElements(By.xpath("//*[contains(@class, 'row')]")).size();
         WebElement text;
 
-        for (int i = 0; i < countriesElement.size(); i++) {
-            text = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]/td[6]"));
-            if (text.getText() != "0") {
-                text.click();
+        for (int i = 1; i < countriesSize + 1; i++) {
+            text = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]"));
+            if (!text.findElement(By.xpath("./td[6]")).getText().equals("0")) {
+                System.out.println(text.findElement(By.xpath("./td[6]")).getText());
+                text.findElement(By.tagName("a")).click();
                 checkZones(webDriver);
+                webDriver.navigate().back();
             }
         }
-
-
     }
 
     @After
@@ -61,11 +67,13 @@ public class LitecartCountrGeoTest {
         WebElement table = webDriver.findElement(By.id("table-zones"));
         List<WebElement> rows = table.findElements(By.tagName("tr"));
 
-
         int result;
-        for (int i = 0; i < rows.size() - 1; i++) {
-            result = row.get(i).getText().compareTo(countriesElement.get(i + 1).getText());
-            assertTrue("Сортировка стран не в алфавитном порядке", result < 0);
+        for (int i = 1; i < rows.size() - 2; i++) {
+            String curElement = rows.get(i).findElement(By.xpath("./td[3]")).getText();
+            String nextElement = rows.get(i + 1).findElement(By.xpath("./td[3]")).getText();
+            result = curElement.compareTo(nextElement);
+
+            assertTrue("Сортировка зон не в алфавитном порядке", result < 0);
         }
 
     }
