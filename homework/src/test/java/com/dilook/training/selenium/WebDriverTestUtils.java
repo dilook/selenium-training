@@ -25,7 +25,15 @@ public class WebDriverTestUtils {
 
         switch (browser) {
             case "FF":
-                return caps == null ? new FirefoxDriver() : new FirefoxDriver(caps);
+                FirefoxOptions fo = new FirefoxOptions()
+                        .setLegacy(false)
+                        .setBinary(extractPath("src/test/resources/caps.properties", "ff.path"));
+                if (caps == null) {
+                    return new FirefoxDriver(fo);
+                } else {
+                    caps.setCapability(FirefoxOptions.FIREFOX_OPTIONS, fo);
+                    return new FirefoxDriver(caps);
+                }
 
             case "IE":
                 return caps == null ? new InternetExplorerDriver() : new InternetExplorerDriver(caps);
@@ -34,14 +42,14 @@ public class WebDriverTestUtils {
                 return caps == null ? new ChromeDriver() : new ChromeDriver(caps);
 
             case "FFESR":
-                FirefoxOptions fo = new FirefoxOptions()
+                fo = new FirefoxOptions()
                         .setLegacy(true)
-                        .setBinary(extractESRPath("src/test/resources/caps.properties", "esr.path"));
+                        .setBinary(extractPath("src/test/resources/caps.properties", "esr.path"));
                 return new FirefoxDriver(fo);
 
             case "FFNIGHT":
                 fo = new FirefoxOptions()
-                        .setBinary(extractESRPath("src/test/resources/caps.properties", "nightly.path"))
+                        .setBinary(extractPath("src/test/resources/caps.properties", "nightly.path"))
                         .setProfile(new FirefoxProfile());
 
                 return new FirefoxDriver(fo);
@@ -49,9 +57,10 @@ public class WebDriverTestUtils {
             default:
                 return caps == null ? new ChromeDriver() : new ChromeDriver(caps);
         }
+
     }
 
-    private static String extractESRPath(String propFilePath, String propName) throws IOException {
+    private static String extractPath(String propFilePath, String propName) throws IOException {
         Properties properties = new Properties();
 
         try (FileReader fr = new FileReader(new File(propFilePath))) {
