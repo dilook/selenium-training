@@ -43,13 +43,13 @@ public class LitecartCountrGeoTest {
     public void assertZones() {
         login(webDriver, "http://localhost/litecart/admin/?app=countries&doc=countries");
 
-        int countriesSize = webDriver.findElements(By.xpath("//*[contains(@class, 'row')]")).size();
-        WebElement text;
+        int countriesSize = webDriver.findElements(By.className("row")).size();
+        WebElement row;
 
         for (int i = 1; i < countriesSize + 1; i++) {
-            text = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]"));
-            if (!text.findElement(By.xpath("./td[6]")).getText().equals("0")) {
-                text.findElement(By.tagName("a")).click();
+            row = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]"));
+            if (!row.findElement(By.xpath("./td[6]")).getText().equals("0")) {
+                row.findElement(By.tagName("a")).click();
                 checkZones(webDriver);
                 webDriver.navigate().back();
             }
@@ -74,9 +74,11 @@ public class LitecartCountrGeoTest {
         List<WebElement> rows = table.findElements(By.tagName("tr"));
 
         int result;
+        String curElement, nextElement;
         for (int i = 1; i < rows.size() - 2; i++) {
-            String curElement = rows.get(i).findElement(By.xpath("./td[3]")).getText();
-            String nextElement = rows.get(i + 1).findElement(By.xpath("./td[3]")).getText();
+            curElement = rows.get(i).findElement(By.xpath("./td[3]")).getText();
+            nextElement = rows.get(i + 1).findElement(By.xpath("./td[3]")).getText();
+
             result = curElement.compareTo(nextElement);
 
             assertTrue("Сортировка зон не в алфавитном порядке", result < 0);
