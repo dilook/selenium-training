@@ -28,7 +28,7 @@ public class LitecartCountrGeoTest {
     }
 
     @Test
-    public void assertCountry() {
+    public void assertCountries() {
         login(webDriver, "http://localhost/litecart/admin/?app=countries&doc=countries");
 
         List<WebElement> countriesElement = webDriver.findElements(By.xpath("//*[contains(@class, 'row')]/td[5]"));
@@ -40,7 +40,7 @@ public class LitecartCountrGeoTest {
     }
 
     @Test
-    public void assertZones() {
+    public void assertZonesFromCountries() {
         login(webDriver, "http://localhost/litecart/admin/?app=countries&doc=countries");
 
         int countriesSize = webDriver.findElements(By.className("row")).size();
@@ -57,7 +57,7 @@ public class LitecartCountrGeoTest {
     }
 
     @Test
-    public void assertsGeoZones() {
+    public void assertsZonesFromGeoZones() {
         login(webDriver, "http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
 
         int geoZonesSize = webDriver.findElements(By.cssSelector(".row")).size();
