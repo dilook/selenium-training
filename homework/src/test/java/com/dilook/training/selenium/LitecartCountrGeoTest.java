@@ -50,7 +50,7 @@ public class LitecartCountrGeoTest {
             row = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]"));
             if (!row.findElement(By.xpath("./td[6]")).getText().equals("0")) {
                 row.findElement(By.tagName("a")).click();
-                checkZones(webDriver);
+                checkZones(webDriver, "");
                 webDriver.navigate().back();
             }
         }
@@ -59,6 +59,17 @@ public class LitecartCountrGeoTest {
     @Test
     public void assertsGeoZones() {
         login(webDriver, "http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+
+        int geoZonesSize = webDriver.findElements(By.cssSelector(".row")).size();
+        WebElement row;
+
+        for (int i = 1; i < geoZonesSize + 1; i++) {
+            row = webDriver.findElement(By.xpath("//*[contains(@class, 'row')][" + i + "]"));
+            row.findElement(By.xpath("./td[3]/a")).click();
+
+            checkZones(webDriver, "select");
+            webDriver.navigate().back();
+        }
 
 
     }
@@ -69,17 +80,22 @@ public class LitecartCountrGeoTest {
         webDriver = null;
     }
 
-    private void checkZones(WebDriver webDriver) {
+    private void checkZones(WebDriver webDriver, String type) {
         WebElement table = webDriver.findElement(By.id("table-zones"));
         List<WebElement> rows = table.findElements(By.tagName("tr"));
 
         int result;
-        String curElement, nextElement;
+        WebElement curElement, nextElement;
         for (int i = 1; i < rows.size() - 2; i++) {
-            curElement = rows.get(i).findElement(By.xpath("./td[3]")).getText();
-            nextElement = rows.get(i + 1).findElement(By.xpath("./td[3]")).getText();
+            curElement = rows.get(i).findElement(By.xpath("./td[3]"));
+            nextElement = rows.get(i + 1).findElement(By.xpath("./td[3]"));
 
-            result = curElement.compareTo(nextElement);
+            if (type.equals("select")) {
+                nextElement = nextElement.findElement(By.cssSelector("[selected = selected"));
+                curElement = curElement.findElement(By.cssSelector("[selected = selected"));
+            }
+
+            result = curElement.getText().compareTo(nextElement.getText());
 
             assertTrue("Сортировка зон не в алфавитном порядке", result < 0);
         }
