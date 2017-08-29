@@ -1,35 +1,22 @@
 package com.dilook.training.selenium;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.io.IOException;
 import java.util.List;
 
-import static com.dilook.training.selenium.UITestUtils.login;
-import static com.dilook.training.selenium.WebDriverTestUtils.selectWebDriver;
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Di on 27.08.2017.
  */
-public class LitecartCountrGeoTest {
-    private WebDriver webDriver;
-
-    @Before
-    public void start() throws IOException {
-        DesiredCapabilities caps = new DesiredCapabilities();
-        webDriver = selectWebDriver(caps);
-    }
+public class LitecartCountrGeoTest extends AdminLoginTest {
 
     @Test
     public void assertCountries() {
-        login(webDriver, "http://localhost/litecart/admin/?app=countries&doc=countries");
+        navigateTo("http://localhost/litecart/admin/?app=countries&doc=countries");
 
         List<WebElement> countriesElement = webDriver.findElements(By.xpath("//*[contains(@class, 'row')]/td[5]"));
         int result;
@@ -41,7 +28,7 @@ public class LitecartCountrGeoTest {
 
     @Test
     public void assertZonesFromCountries() {
-        login(webDriver, "http://localhost/litecart/admin/?app=countries&doc=countries");
+        navigateTo("http://localhost/litecart/admin/?app=countries&doc=countries");
 
         int countriesSize = webDriver.findElements(By.className("row")).size();
         WebElement row;
@@ -58,7 +45,7 @@ public class LitecartCountrGeoTest {
 
     @Test
     public void assertsZonesFromGeoZones() {
-        login(webDriver, "http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+        navigateTo("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
 
         int geoZonesSize = webDriver.findElements(By.cssSelector(".row")).size();
         WebElement row;
@@ -70,14 +57,6 @@ public class LitecartCountrGeoTest {
             checkZones(webDriver, "select");
             webDriver.navigate().back();
         }
-
-
-    }
-
-    @After
-    public void stop() {
-        webDriver.quit();
-        webDriver = null;
     }
 
     private void checkZones(WebDriver webDriver, String type) {
