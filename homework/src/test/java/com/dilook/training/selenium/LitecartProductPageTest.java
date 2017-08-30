@@ -19,28 +19,53 @@ public class LitecartProductPageTest extends OpenClientPageTest {
         String nameFromMain = product.findElement(By.cssSelector("div.name")).getText();
 
         WebElement regpriceFromMain = product.findElement(By.cssSelector(".regular-price"));
+        String regPrice = regpriceFromMain.getText();
         WebElement camppriceFromMain = product.findElement(By.cssSelector(".campaign-price"));
+        String campPrice = camppriceFromMain.getText();
 
-        assertTrue(regpriceFromMain.getCssValue("color").contains("119, 119, 119"));
-        assertEquals("s", regpriceFromMain.getTagName());
-        assertTrue(camppriceFromMain.getCssValue("color").contains("204, 0, 0"));
-        assertEquals("strong", camppriceFromMain.getTagName());
-
-        Dimension dim = camppriceFromMain.getSize();
-        int camppriceSize = dim.height * dim.width;
-
-        dim = regpriceFromMain.getSize();
-        int regpriceSize = dim.height * dim.width;
-
-        assertTrue(regpriceSize < camppriceSize);
+        assertPriceStyle(regpriceFromMain, "reg");
+        assertPriceStyle(camppriceFromMain, "camp");
+        assertPriceSize(camppriceFromMain, regpriceFromMain);
 
         product.click();
 
-        String nameFromCategory = webDriver.findElement(By.cssSelector("[itemprop = name]")).getText();
+        String nameFromCategory = webDriver.findElement(By.cssSelector("h1.title")).getText();
+        WebElement regpriceFromView = webDriver.findElement(By.cssSelector(".regular-price"));
+        WebElement camppriceFromView = webDriver.findElement(By.cssSelector(".campaign-price"));
 
-        assertEquals(nameFromMain, nameFromCategory);/*
-        assertEquals(regpriceFromMain.getText(), "");
-        assertEquals(camppriceFromMain.getText(), "");*/
+
+        assertEquals(nameFromMain, nameFromCategory);
+        assertEquals(regPrice, regpriceFromView.getText());
+        assertEquals(campPrice, camppriceFromView.getText());
+
+        assertPriceStyle(regpriceFromView, "reg");
+        assertPriceStyle(camppriceFromView, "camp");
+        assertPriceSize(camppriceFromView, regpriceFromView);
+    }
+
+
+    public void assertPriceSize(WebElement campaignPrice, WebElement regularPrice) {
+        Dimension dim = campaignPrice.getSize();
+        int camppriceSize = dim.height * dim.width;
+
+        dim = regularPrice.getSize();
+        int regpriceSize = dim.height * dim.width;
+
+        assertTrue(regpriceSize < camppriceSize);
+    }
+
+    private void assertPriceStyle(WebElement price, String type) {
+        String color = price.getCssValue("color");
+        if (type.equals("reg")) {
+            assertTrue(color.contains("119, 119, 119") | color.contains("102, 102, 102"));
+            assertEquals("s", price.getTagName());
+
+        } else if (type.equals("camp")) {
+            assertTrue(color.contains("204, 0, 0"));
+            assertEquals("strong", price.getTagName());
+
+        }
+
     }
 
 }
