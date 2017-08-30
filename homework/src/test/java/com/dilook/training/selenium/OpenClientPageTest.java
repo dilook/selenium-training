@@ -9,6 +9,6 @@ public class OpenClientPageTest extends BaseTest {
 
     @BeforeClass
     public static void openClientSideTest() {
-        webDriver.get("http://localhost/litecart/en/");
+        webDriver.get("https://litecart.000webhostapp.com/en/");
     }
 }
