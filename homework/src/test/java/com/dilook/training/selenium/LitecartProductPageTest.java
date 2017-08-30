@@ -2,6 +2,7 @@ package com.dilook.training.selenium;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.Assert.assertEquals;
@@ -19,19 +20,27 @@ public class LitecartProductPageTest extends OpenClientPageTest {
 
         WebElement regpriceFromMain = product.findElement(By.cssSelector(".regular-price"));
         WebElement camppriceFromMain = product.findElement(By.cssSelector(".campaign-price"));
-        assertTrue("", regpriceFromMain.getCssValue("color").contains("119, 119, 199"));
-        assertEquals(regpriceFromMain.getTagName(), "s");
+
+        assertTrue(regpriceFromMain.getCssValue("color").contains("119, 119, 119"));
+        assertEquals("s", regpriceFromMain.getTagName());
         assertTrue(camppriceFromMain.getCssValue("color").contains("204, 0, 0"));
-        assertEquals(regpriceFromMain.getTagName(), "strong");
-        System.out.println(camppriceFromMain.getSize());
+        assertEquals("strong", camppriceFromMain.getTagName());
+
+        Dimension dim = camppriceFromMain.getSize();
+        int camppriceSize = dim.height * dim.width;
+
+        dim = regpriceFromMain.getSize();
+        int regpriceSize = dim.height * dim.width;
+
+        assertTrue(regpriceSize < camppriceSize);
 
         product.click();
 
         String nameFromCategory = webDriver.findElement(By.cssSelector("[itemprop = name]")).getText();
 
-        assertEquals("", nameFromMain, nameFromCategory);
-        assertEquals("", regpriceFromMain.getText(), "");
-        assertEquals("", camppriceFromMain.getText(), "");
+        assertEquals(nameFromMain, nameFromCategory);/*
+        assertEquals(regpriceFromMain.getText(), "");
+        assertEquals(camppriceFromMain.getText(), "");*/
     }
 
 }

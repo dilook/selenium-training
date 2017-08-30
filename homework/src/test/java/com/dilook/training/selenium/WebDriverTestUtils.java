@@ -1,11 +1,13 @@
 package com.dilook.training.selenium;
 
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -13,6 +15,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
+
+import static org.openqa.selenium.Proxy.ProxyType.AUTODETECT;
 
 /**
  * Created by Di on 24.08.2017.
@@ -28,12 +32,9 @@ public class WebDriverTestUtils {
                 FirefoxOptions fo = new FirefoxOptions()
                         .setLegacy(false)
                         .setBinary(extractPath("src/test/resources/caps.properties", "ff.path"));
-                if (caps == null) {
-                    return new FirefoxDriver(fo);
-                } else {
-                    caps.setCapability(FirefoxOptions.FIREFOX_OPTIONS, fo);
-                    return new FirefoxDriver(caps);
-                }
+                caps.setCapability(CapabilityType.PROXY, setProxy());
+                caps.setCapability(FirefoxOptions.FIREFOX_OPTIONS, fo);
+                return new FirefoxDriver(caps);
 
             case "IE":
                 return caps == null ? new InternetExplorerDriver() : new InternetExplorerDriver(caps);
@@ -70,6 +71,13 @@ public class WebDriverTestUtils {
         }
 
         return properties.getProperty(propName);
+    }
+
+    private static Proxy setProxy() {
+        Proxy proxy = new Proxy();
+        proxy.setProxyType(AUTODETECT);
+
+        return proxy;
     }
 
 
