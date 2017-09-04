@@ -5,6 +5,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -44,7 +49,7 @@ public class LitecartProductPageTest extends OpenClientPageTest {
     }
 
 
-    public void assertPriceSize(WebElement campaignPrice, WebElement regularPrice) {
+    private void assertPriceSize(WebElement campaignPrice, WebElement regularPrice) {
         Dimension dim = campaignPrice.getSize();
         int camppriceSize = dim.height * dim.width;
 
@@ -56,16 +61,35 @@ public class LitecartProductPageTest extends OpenClientPageTest {
 
     private void assertPriceStyle(WebElement price, String type) {
         String color = price.getCssValue("color");
+        Map<String, String> rgb = getRGB(color);
+
         if (type.equals("reg")) {
-            assertTrue(color.contains("119, 119, 119") | color.contains("102, 102, 102"));
+            assertEquals(rgb.get("red"), rgb.get("green"));
+            assertEquals(rgb.get("green"), rgb.get("blue"));
             assertEquals("s", price.getTagName());
 
         } else if (type.equals("camp")) {
-            assertTrue(color.contains("204, 0, 0"));
+            assertTrue(!rgb.get("red").equals("0"));
+            assertTrue(rgb.get("green").equals("0"));
+            assertTrue(rgb.get("blue").equals("0"));
             assertEquals("strong", price.getTagName());
 
         }
 
+    }
+
+    private Map<String, String> getRGB(String text) {
+        Pattern pattern = Pattern.compile("\\((\\d+),\\s(\\d+),\\s(\\d+),\\s(\\d)\\)");
+        Matcher matcher = pattern.matcher(text);
+        Map<String,String> rgb = new HashMap<>();
+
+        while (matcher.find()) {
+            rgb.put("red", matcher.group(1));
+            rgb.put("green", matcher.group(2));
+            rgb.put("blue", matcher.group(3));
+        }
+
+        return rgb;
     }
 
 }
