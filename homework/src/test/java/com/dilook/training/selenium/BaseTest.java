@@ -1,11 +1,13 @@
 package com.dilook.training.selenium;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 
@@ -17,11 +19,13 @@ import static com.dilook.training.selenium.WebDriverTestUtils.selectWebDriver;
 public class BaseTest {
 
     static WebDriver webDriver;
+    static WebDriverWait webDriverWait;
 
     @BeforeClass
     public static void start() throws IOException {
         DesiredCapabilities caps = new DesiredCapabilities();
         webDriver = selectWebDriver(caps);
+        webDriverWait = new WebDriverWait(webDriver, 10);
     }
 
     @AfterClass
@@ -40,6 +44,16 @@ public class BaseTest {
 
     static Boolean areElementsPresent(WebElement webElement, By locator) {
         return webElement.findElements(locator).size() > 0;
+    }
+
+    static String generator(Integer length) {
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = upper.toLowerCase();
+        String digits = "0123456789";
+        String alphanum = upper + lower + digits;
+
+        return RandomStringUtils.random(length, alphanum.toCharArray());
+
     }
 
 }
