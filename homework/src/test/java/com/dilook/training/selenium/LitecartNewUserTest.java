@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 /**
  * Created by Di on 03.09.2017.
@@ -26,7 +26,7 @@ public class LitecartNewUserTest extends OpenClientPageTest {
         Select country = new Select(webDriver.findElement(By.name("country_code")));
         country.selectByVisibleText("United States");
 
-        webDriverWait.until(elementToBeClickable(webDriver.findElement(By.cssSelector("select[name = 'zone_code']"))));
+        webDriverWait.until(elementToBeClickable(By.cssSelector("select[name = 'zone_code']")));
         Select zone = new Select(webDriver.findElement(By.cssSelector("select[name = 'zone_code']")));
         zone.selectByVisibleText("Guam");
 
@@ -39,15 +39,17 @@ public class LitecartNewUserTest extends OpenClientPageTest {
         webDriver.findElement(By.name("confirmed_password")).sendKeys("passwd");
         webDriver.findElement(By.name("create_account")).click();
 
-        webDriverWait.until(visibilityOf(webDriver.findElement(By.id("box-account")).findElement(By.linkText("Logout"))));
+        webDriverWait.until(visibilityOfElementLocated(By.id("box-account")));
 
         webDriver.findElement(By.id("box-account")).findElement(By.linkText("Logout")).click();
+        webDriverWait.until(visibilityOfElementLocated(By.name("login")));
 
         webDriver.findElement(By.name("email")).sendKeys(email);
         webDriver.findElement(By.name("password")).sendKeys("passwd");
         webDriver.findElement(By.name("login")).click();
 
-        webDriverWait.until(visibilityOf(webDriver.findElement(By.id("box-account")).findElement(By.linkText("Logout"))));
+        webDriverWait.until(visibilityOfElementLocated(By.id("box-account")));
         webDriver.findElement(By.id("box-account")).findElement(By.linkText("Logout")).click();
+        webDriverWait.until(visibilityOfElementLocated(By.name("login")));
     }
 }
