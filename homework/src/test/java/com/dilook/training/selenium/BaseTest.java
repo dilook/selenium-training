@@ -46,6 +46,13 @@ public class BaseTest {
         return webElement.findElements(locator).size() > 0;
     }
 
+    static void checked(By locator) {
+        WebElement checkbox = webDriver.findElement(locator);
+        if (!checkbox.isSelected()){
+            checkbox.click();
+        }
+    }
+
     static String generator(Integer length) {
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lower = upper.toLowerCase();
