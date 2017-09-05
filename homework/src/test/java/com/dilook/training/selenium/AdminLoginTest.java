@@ -17,7 +17,5 @@ public class AdminLoginTest extends BaseTest {
         webDriver.findElement(By.name("username")).sendKeys("admin");
         webDriver.findElement(By.name("password")).sendKeys("admin");
         webDriver.findElement(By.name("login")).click();
-
-        //System.out.println(((HasCapabilities) webDriver).getCapabilities());
     }
 }
