@@ -74,6 +74,14 @@ public class BaseTest {
         return webElement;
     }
 
+    static void clickByElement(By locator) {
+        webDriver.findElement(locator).click();
+    }
+
+    static void clickByElement(WebElement webElement, By locator) {
+        webElement.findElement(locator).click();
+    }
+
     static void setElementBigValue(By locator, String bigValue) {
         StringSelection selection = new StringSelection(bigValue);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
