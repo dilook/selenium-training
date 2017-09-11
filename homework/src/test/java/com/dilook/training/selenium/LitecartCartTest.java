@@ -31,18 +31,30 @@ public class LitecartCartTest extends OpenClientPageTest {
         clickByElement(By.id("cart"));
 
         int cartSize = webDriver.findElements(By.cssSelector("li.shortcut")).size();
-        System.out.println("Count of position are: " + cartSize);
+        if (cartSize == 0) {
+            System.out.println("Count of position: 1");
+        } else {
+            System.out.println("Count of position: " + cartSize);
+        }
         WebElement item;
-        for (int i = 1; i < cartSize + 1; i++) {
-            clickByElement(By.xpath("//li[contains(@class, 'shortcut')][1]"));
-            item = webDriver.findElement(By.xpath("(//*[contains(@class, 'dataTable')]//td[contains(@class, 'item')])[1]"));
+        String textOfItem;
+        for (int i = 1; i < cartSize; i++) {
+            clickByElement(By.cssSelector("li.shortcut"));
+            item = webDriver.findElement(By.cssSelector(".dataTable td.item"));
+            textOfItem = item.getText();
 
             clickByElement(By.name("remove_cart_item"));
 
-            System.out.println("Item " + i+ ": " + item.getText() + " was removed");
+            System.out.println("\nItem " + i + ": " + textOfItem + ", was removed");
 
             webDriverWait.until(stalenessOf(item));
         }
 
+        WebElement table = webDriver.findElement(By.id("box-checkout-summary"));
+        textOfItem = webDriver.findElement(By.cssSelector(".dataTable td.item")).getText();
+        clickByElement(By.name("remove_cart_item"));
+        System.out.println("\nItem " + cartSize + ": " + textOfItem + " was removed");
+
+        webDriverWait.until(stalenessOf(table));
     }
 }
