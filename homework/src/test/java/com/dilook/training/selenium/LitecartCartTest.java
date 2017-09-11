@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfElementsToBe;
+import static org.openqa.selenium.support.ui.ExpectedConditions.stalenessOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
 
 /**
@@ -34,13 +34,14 @@ public class LitecartCartTest extends OpenClientPageTest {
         System.out.println("Count of position are: " + cartSize);
         WebElement item;
         for (int i = 1; i < cartSize + 1; i++) {
-            clickByElement(By.xpath("//li[contains(@class, 'shortcut')][" + i + "]"));
+            clickByElement(By.xpath("//li[contains(@class, 'shortcut')][1]"));
+            item = webDriver.findElement(By.xpath("(//*[contains(@class, 'dataTable')]//td[contains(@class, 'item')])[1]"));
+
             clickByElement(By.name("remove_cart_item"));
 
-            item = webDriver.findElement(By.xpath("//*[contains(@class, 'dataTable')]//td[contains(@class, 'item')][" + (i + 1) +"]"));
-            System.out.println("Item" + i+ ": " + item.getText());
+            System.out.println("Item " + i+ ": " + item.getText() + " was removed");
 
-            webDriverWait.until((numberOfElementsToBe(By.xpath("//*[contains(@class, 'dataTable')]//[contains(@class, 'item')]"), cartSize - i)));
+            webDriverWait.until(stalenessOf(item));
         }
 
     }
