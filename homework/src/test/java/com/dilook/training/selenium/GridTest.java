@@ -1,6 +1,7 @@
 package com.dilook.training.selenium;
 
 import org.junit.Test;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -13,10 +14,17 @@ import java.net.URL;
  * Date      : 15.09.2017
  */
 public class GridTest {
-    @Test
-    public void testGrid() throws MalformedURLException{
+    public static final String USERNAME = "dilook1";
+    public static final String AUTOMATE_KEY = "yzA9BLrPzDDzLGWnHVt7";
+    public static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
-        WebDriver webDriver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.internetExplorer());
+    @Test
+    public void testGrid() throws MalformedURLException {
+
+
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities("firefox", "55", Platform.WIN8);
+
+        WebDriver webDriver = new RemoteWebDriver(new URL(URL), desiredCapabilities);
         webDriver.get("http://google.com");
         webDriver.quit();
 
