@@ -14,7 +14,7 @@ public class LitecartNewUserTest extends OpenClientPageTest {
 
     @Test
     public void registerUser() {
-        navigateTo("https://litecart.000webhostapp.com/en/create_account");
+        navigateTo("/en/create_account");
 
         webDriver.findElement(By.name("firstname")).sendKeys("Gordon");
         webDriver.findElement(By.name("lastname")).sendKeys("Freeman");

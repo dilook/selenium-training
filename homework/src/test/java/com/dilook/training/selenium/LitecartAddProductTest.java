@@ -16,11 +16,11 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElem
  * Created by Di on 04.09.2017.
  */
 public class LitecartAddProductTest extends AdminLoginTest {
-    static String BIG_TEXT = "It's really BIG text about everything stuff what happens in our great wonderful world!!!!";
+    private static String BIG_TEXT = "It's really BIG text about everything stuff what happens in our great wonderful world!!!!";
 
     @Test
-    public void addProduct() throws InterruptedException {
-        navigateTo("https://litecart.000webhostapp.com/admin/?app=catalog&doc=catalog");
+    public void addProduct() {
+        navigateTo("/admin/?app=catalog&doc=catalog");
 
         webDriver.findElement(By.xpath("//*[contains(text(), 'Add New Product')]")).click();
 

@@ -12,8 +12,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
-import java.io.IOException;
 
+import static com.dilook.training.selenium.WebDriverTestUtils.extractPath;
 import static com.dilook.training.selenium.WebDriverTestUtils.selectWebDriver;
 
 /**
@@ -22,10 +22,13 @@ import static com.dilook.training.selenium.WebDriverTestUtils.selectWebDriver;
 public class BaseTest {
 
     static WebDriver webDriver;
+    static String login = extractPath("src/test/resources/app.properties", "app.login");
+    static String passwd = extractPath("src/test/resources/app.properties", "app.passwd");
+    static String url = extractPath("src/test/resources/app.properties", "app.url");
     static WebDriverWait webDriverWait;
 
     @BeforeClass
-    public static void start() throws IOException {
+    public static void start(){
         DesiredCapabilities caps = new DesiredCapabilities();
         webDriver = selectWebDriver(caps);
         webDriverWait = new WebDriverWait(webDriver, 10);
@@ -38,7 +41,7 @@ public class BaseTest {
     }
 
     static void navigateTo(String page) {
-        webDriver.navigate().to(page);
+        webDriver.navigate().to("http://" + url + page);
     }
 
     static Boolean areElementsPresent(By locator) {
@@ -115,7 +118,7 @@ public class BaseTest {
         ((JavascriptExecutor) driver).executeScript(script, element);
     }
 
-    public void attachFile(By locator, String file) {
+    void attachFile(By locator, String file) {
         ClassLoader classLoader = getClass().getClassLoader();
         String path = new File(classLoader.getResource(file).getFile()).getAbsolutePath();
         WebElement input = webDriver.findElement(locator);

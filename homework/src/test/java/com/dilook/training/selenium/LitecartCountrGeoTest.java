@@ -16,7 +16,7 @@ public class LitecartCountrGeoTest extends AdminLoginTest {
 
     @Test
     public void assertCountries() {
-        navigateTo("https://litecart.000webhostapp.com/admin/?app=countries&doc=countries");
+        navigateTo("/admin/?app=countries&doc=countries");
 
         List<WebElement> countriesElement = webDriver.findElements(By.xpath("//*[contains(@class, 'row')]/td[5]"));
         int result;
@@ -28,7 +28,7 @@ public class LitecartCountrGeoTest extends AdminLoginTest {
 
     @Test
     public void assertZonesFromCountries() {
-        navigateTo("https://litecart.000webhostapp.com/admin/?app=countries&doc=countries");
+        navigateTo("/admin/?app=countries&doc=countries");
 
         int countriesSize = webDriver.findElements(By.className("row")).size();
         WebElement row;
@@ -45,7 +45,7 @@ public class LitecartCountrGeoTest extends AdminLoginTest {
 
     @Test
     public void assertsZonesFromGeoZones() {
-        navigateTo("https://litecart.000webhostapp.com/admin/?app=geo_zones&doc=geo_zones");
+        navigateTo("/admin/?app=geo_zones&doc=geo_zones");
 
         int geoZonesSize = webDriver.findElements(By.cssSelector(".row")).size();
         WebElement row;

@@ -23,7 +23,7 @@ import static org.openqa.selenium.Proxy.ProxyType.AUTODETECT;
  */
 class WebDriverTestUtils {
 
-    static WebDriver selectWebDriver(DesiredCapabilities caps) throws IOException {
+    static WebDriver selectWebDriver(DesiredCapabilities caps) {
         String browser = System.getProperty("browser", "CR");
         System.out.println(browser);
 
@@ -37,7 +37,7 @@ class WebDriverTestUtils {
                 return new FirefoxDriver(caps);
 
             case "IE":
-                WebDriver ieDriver = caps == null ? new InternetExplorerDriver(): new InternetExplorerDriver(caps);
+                WebDriver ieDriver = caps == null ? new InternetExplorerDriver() : new InternetExplorerDriver(caps);
                 ieDriver.manage().window().maximize();
                 ieDriver.manage().deleteAllCookies();
                 return ieDriver;
@@ -64,12 +64,16 @@ class WebDriverTestUtils {
 
     }
 
-    private static String extractPath(String propFilePath, String propName) throws IOException {
+    public static String extractPath(String propFilePath, String propName) {
         Properties properties = new Properties();
 
         try {
             FileReader fr = new FileReader(new File(propFilePath));
-            properties.load(fr);
+            try {
+                properties.load(fr);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
