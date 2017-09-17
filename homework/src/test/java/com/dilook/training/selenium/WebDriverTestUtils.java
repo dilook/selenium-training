@@ -41,9 +41,9 @@ public class WebDriverTestUtils {
                 return new FirefoxDriver(caps);
 
             case "IE":
-                WebDriver ieDriver = caps == null ? new InternetExplorerDriver() : new InternetExplorerDriver(caps);
+                caps.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+                WebDriver ieDriver = new InternetExplorerDriver(caps);
                 ieDriver.manage().window().maximize();
-                ieDriver.manage().deleteAllCookies();
                 return ieDriver;
 
             case "CR":
