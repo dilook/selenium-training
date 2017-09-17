@@ -21,9 +21,13 @@ import static org.openqa.selenium.Proxy.ProxyType.AUTODETECT;
 /**
  * Created by Di on 24.08.2017.
  */
-class WebDriverTestUtils {
+public class WebDriverTestUtils {
 
-    static WebDriver selectWebDriver(DesiredCapabilities caps) {
+    public static final String login  = extractPath("src/test/resources/app.properties", "app.login");
+    public static final String passwd = extractPath("src/test/resources/app.properties", "app.passwd");
+    public static final String url = extractPath("src/test/resources/app.properties", "app.url");
+
+    public static WebDriver selectWebDriver(DesiredCapabilities caps) {
         String browser = System.getProperty("browser", "CR");
         System.out.println(browser);
 
